@@ -55,15 +55,15 @@ private extension UILabel {
     func update(withValue value:CGFloat, valueAttributes:[NSAttributedStringKey:Any]?,valueIndicator:String,indicatorAttributes:[NSAttributedStringKey:Any]?,showsDecimal:Bool,decimalPlaces:Int, valueDelegate:UICircularProgressRingView?){
         
         if showsDecimal {
-            let attributedString = NSMutableAttributedString(string:String(format: "%.\(decimalPlaces)f", value) , attributes: valueAttributes)
+            let attributedString = NSMutableAttributedString(string:String(format: "%.\(decimalPlaces)f", value) , attributes: valueAttributes  as! [String : Any])
             
-            attributedString.append(NSAttributedString(string: valueIndicator, attributes: indicatorAttributes))
+            attributedString.append(NSAttributedString(string: valueIndicator, attributes: indicatorAttributes as! [String : Any]))
             self.attributedText = attributedString
-        
-        } else {
-            let attributedString = NSMutableAttributedString(string:"\(Int(value))" , attributes: valueAttributes)
             
-            attributedString.append(NSAttributedString(string: valueIndicator, attributes: indicatorAttributes))
+        } else {
+            let attributedString = NSMutableAttributedString(string:"\(Int(value))" , attributes: valueAttributes as! [String : Any])
+            
+            attributedString.append(NSAttributedString(string: valueIndicator, attributes: indicatorAttributes as! [String : Any]))
             
             self.attributedText = attributedString
         }
