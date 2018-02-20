@@ -99,6 +99,7 @@ class UICircularProgressRingLayer: CAShapeLayer {
     @NSManaged var fontColor: UIColor
     @NSManaged var font: UIFont
     @NSManaged var valueIndicator: String
+    @NSManaged var valueIndicatorLabelNewLine:Bool
     @NSManaged var showFloatingPoint: Bool
     @NSManaged var decimalPlaces: Int
     
@@ -334,6 +335,11 @@ class UICircularProgressRingLayer: CAShapeLayer {
         valueLabel.font = self.font
         valueLabel.textAlignment = .center
         valueLabel.textColor = fontColor
+        if valueIndicatorLabelNewLine {
+            valueLabel.numberOfLines = 2
+        }else{
+            valueLabel.numberOfLines = 1
+        }
 
         valueLabel.update(withValue: value,
                           valueIndicator: valueIndicator,

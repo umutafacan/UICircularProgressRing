@@ -626,6 +626,12 @@ import UIKit
         }
     }
     
+    @IBInspectable open var valueIndicatorNewLine:Bool = false{
+        didSet{
+            
+        }
+    }
+    
     /**
      A toggle for showing or hiding floating points from
      the value in the value label
