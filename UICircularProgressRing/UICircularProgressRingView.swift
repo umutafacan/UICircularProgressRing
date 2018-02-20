@@ -628,7 +628,7 @@ import UIKit
     
     @IBInspectable open var valueIndicatorNewLine:Bool = false{
         didSet{
-            
+            self.ringLayer.valueIndicatorLabelNewLine = self.valueIndicatorNewLine
         }
     }
     
