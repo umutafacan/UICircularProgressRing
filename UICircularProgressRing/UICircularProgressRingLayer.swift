@@ -51,7 +51,30 @@ private extension UILabel {
         valueDelegate?.willDisplayLabel(label: self)
         self.sizeToFit()
     }
+    
+    func update(withValue value:CGFloat, valueAttributes:[NSAttributedStringKey:Any]?,valueIndicator:String,indicatorAttributes:[NSAttributedStringKey:Any]?,showsDecimal:Bool,decimalPlaces:Int, valueDelegate:UICircularProgressRingView?){
+        
+        if showsDecimal {
+            let attributedString = NSMutableAttributedString(string:String(format: "%.\(decimalPlaces)f", value) , attributes: valueAttributes)
+            
+            attributedString.append(NSAttributedString(string: valueIndicator, attributes: indicatorAttributes))
+            self.attributedText = attributedString
+        
+        } else {
+            let attributedString = NSMutableAttributedString(string:"\(Int(value))" , attributes: valueAttributes)
+            
+            attributedString.append(NSAttributedString(string: valueIndicator, attributes: indicatorAttributes))
+            
+            self.attributedText = attributedString
+        }
+        
+        valueDelegate?.willDisplayLabel(label: self)
+        self.sizeToFit()
+        
+    }
 }
+
+
 
 /**
  The internal subclass for CAShapeLayer.
@@ -102,6 +125,9 @@ class UICircularProgressRingLayer: CAShapeLayer {
     @NSManaged var valueIndicatorLabelNewLine:Bool
     @NSManaged var showFloatingPoint: Bool
     @NSManaged var decimalPlaces: Int
+    @NSManaged var valueAttributes:[NSAttributedStringKey:Any]?
+    @NSManaged var indicatorAttributes:[NSAttributedStringKey:Any]?
+    
     
     var animationDuration: TimeInterval = 1.0
     var animationStyle: String = kCAMediaTimingFunctionEaseInEaseOut
@@ -335,17 +361,24 @@ class UICircularProgressRingLayer: CAShapeLayer {
         valueLabel.font = self.font
         valueLabel.textAlignment = .center
         valueLabel.textColor = fontColor
+        
         if valueIndicatorLabelNewLine {
             valueLabel.numberOfLines = 2
         }else{
             valueLabel.numberOfLines = 1
         }
 
-        valueLabel.update(withValue: value,
-                          valueIndicator: valueIndicator,
-                          showsDecimal: showFloatingPoint,
-                          decimalPlaces: decimalPlaces,
-                          valueDelegate: valueDelegate)
+        if valueAttributes != nil || indicatorAttributes != nil{
+            valueLabel.update(withValue: value, valueAttributes: valueAttributes, valueIndicator: valueIndicator, indicatorAttributes: indicatorAttributes, showsDecimal: showFloatingPoint, decimalPlaces: decimalPlaces, valueDelegate: valueDelegate)
+        }else{
+            valueLabel.update(withValue: value,
+                              valueIndicator: valueIndicator,
+                              showsDecimal: showFloatingPoint,
+                              decimalPlaces: decimalPlaces,
+                              valueDelegate: valueDelegate)
+        }
+        
+        
         
         // Deterime what should be the center for the label
         valueLabel.center = CGPoint(x: bounds.midX, y: bounds.midY)
